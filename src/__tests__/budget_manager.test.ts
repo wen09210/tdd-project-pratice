@@ -1,5 +1,6 @@
 import{ BudgetService}  from '../BudgetService';
 import dayjs = require('dayjs');
+import { Period } from '../period';
 
 
 
@@ -18,6 +19,9 @@ class Budgets {
     lastDay(){
         return this.firstDay().endOf('month')
     }
+    createPeriod() {
+		return new Period(this.firstDay(),this.lastDay())
+	}
 }
 describe('total amount between period',  ()=> {
     let budgetService: BudgetService;
@@ -52,6 +56,11 @@ describe('total amount between period',  ()=> {
     it('period  overlap with budget last day', function () {
         givenBudgets([new Budgets(new Date(2023,7),31)]);
         totalAmountShouldBe(new Date(2023,7,29),new Date(2023,8,2),3)
+    });
+
+    it('invalid period', function () {
+        givenBudgets([new Budgets(new Date(2023,7),31)]);
+        totalAmountShouldBe(new Date(2023,9,29),new Date(2023,8,2),0)
     });
     
     function givenBudgets(budgets:any){
