@@ -21,6 +21,15 @@ class Budgets {
     }
     createPeriod() {
 		return new Period(this.firstDay(),this.lastDay())
+    }
+    days(){
+		return this.firstDay().daysInMonth();
+    }
+    dailyAmount(){
+		return this.amount/this.days();
+    }
+    overlapingAmount(period:any){
+		return this.dailyAmount() * period.overlayppingDays(this.createPeriod());
 	}
 }
 describe('total amount between period',  ()=> {
@@ -61,6 +70,19 @@ describe('total amount between period',  ()=> {
     it('invalid period', function () {
         givenBudgets([new Budgets(new Date(2023,7),31)]);
         totalAmountShouldBe(new Date(2023,9,29),new Date(2023,8,2),0)
+    });
+
+    it('daily amount is 10', function () {
+        givenBudgets([new Budgets(new Date(2023,7),310)]);
+        totalAmountShouldBe(new Date(2023,7,29),new Date(2023,8,2),30)
+    });
+    it('multiple budgets', function () {
+        givenBudgets([
+            new Budgets(new Date(2023,6),3100),
+            new Budgets(new Date(2023,7),310),
+            new Budgets(new Date(2023,8),30),
+            ]);
+        totalAmountShouldBe(new Date(2023,6,30),new Date(2023,8,1),200+310+1)
     });
     
     function givenBudgets(budgets:any){

@@ -7,15 +7,13 @@ export  class BudgetService {
 		
 		let period = new Period(dayjs(start),dayjs(end))
 		let budgets:any = this.getBudgets();
-		if(budgets.length>0){
-			let budget = budgets[0];
-			let another = budget.createPeriod(budget);
-			return period.overlayppingDays(another);
-		}
-		return 0;
+		let totalAmount:any = 0;
+		return  budgets.map((b:any)=>b.overlapingAmount(period))
+		.reduce((x:any,y:any)=>x+y,0);
 		
 	}
 	
+
 	getBudgets(){
 		return undefined
 	}
