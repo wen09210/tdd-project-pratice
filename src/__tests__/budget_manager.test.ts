@@ -2,14 +2,7 @@ import{ BudgetService}  from '../BudgetService';
 import dayjs = require('dayjs');
 
 
-class period  {
-    start;
-     end;
-    constructor(start,end){
-        this.start= start;
-        this.end = end;
-    }
-}
+
 
 class Budgets {
     yearMonth:Date;
@@ -52,14 +45,15 @@ describe('total amount between period',  ()=> {
         givenBudgets([new Budgets(new Date(2023,7),31)]);
         totalAmountShouldBe(new Date(2023,8,1),new Date(2023,8,31),0)
     });
-    it('period  overlap with budget last day', function () {
-        givenBudgets([new Budgets(new Date(2023,7),31)]);
-        totalAmountShouldBe(new Date(2023,7,30),new Date(2023,8,2),2)
-    });
-    it('period  overlap before budget first day', function () {
+    it('period  overlap with budget first day', function () {
         givenBudgets([new Budgets(new Date(2023,7),31)]);
         totalAmountShouldBe(new Date(2023,6,31),new Date(2023,7,2),2)
     });
+    it('period  overlap with budget last day', function () {
+        givenBudgets([new Budgets(new Date(2023,7),31)]);
+        totalAmountShouldBe(new Date(2023,7,29),new Date(2023,8,2),3)
+    });
+    
     function givenBudgets(budgets:any){
         getBudgets.mockReturnValueOnce( budgets)
     }
